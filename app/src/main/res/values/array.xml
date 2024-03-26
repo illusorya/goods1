@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type">
+        <item >图书教材</item>
+        <item >宿舍用品</item>
+        <item >运动户外</item>
+        <item >技能服务</item>
+        <item >彩妆首饰</item>
+        <item >零食水果</item>
+    </string-array>
+</resources>
