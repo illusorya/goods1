@@ -14,9 +14,10 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/etitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请输入评价" />
+        android:text="商品" />
 
     <EditText
         android:id="@+id/etReview"
@@ -33,6 +34,7 @@
         android:stepSize="1"/>
 
     <Button
+        android:onClick="save"
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

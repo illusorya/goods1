@@ -27,7 +27,7 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//订单适配器
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     private List<Orders> list =new ArrayList<>();
     private Context mActivity;

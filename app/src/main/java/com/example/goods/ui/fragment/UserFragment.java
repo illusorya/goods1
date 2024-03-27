@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.goods.bean.Browse;
-import com.example.goods.ui.activity.AddgoodsActivity;
+import com.example.goods.bean.goods;
 import com.example.goods.ui.activity.BrowseActivity;
+import com.example.goods.ui.activity.ChatActivity;
+import com.example.goods.ui.activity.ChatMessageActivity;
 import com.example.goods.ui.activity.ManageActivity;
 import com.example.goods.MyApplication;
 import com.example.goods.ui.activity.OrderActivity;
@@ -23,8 +23,10 @@ import com.example.goods.R;
 import com.example.goods.ui.activity.LoginActivity;
 import com.example.goods.ui.activity.PasswordActivity;
 import com.example.goods.ui.activity.PersonActivity;
-import com.example.goods.ui.activity.goodsAddedActivity;
+import com.example.goods.ui.activity.ReviewActivity;
 import com.example.goods.util.SPUtils;
+
+import org.litepal.crud.DataSupport;
 
 /**
  * 个人中心
@@ -36,10 +38,10 @@ public class UserFragment extends Fragment {
 
     private LinearLayout llFavorite;
     private LinearLayout llBrowse;
+    private LinearLayout llchat;
     private LinearLayout order;
+    private LinearLayout review;
     private LinearLayout manage;
-    private LinearLayout goodsAdd;
-    private LinearLayout goodsAdded;
     private Button btnLogout;
     @Override
     public void onAttach(Context context) {
@@ -53,24 +55,24 @@ public class UserFragment extends Fragment {
         llPerson = view.findViewById(R.id.person);
         llSecurity = view.findViewById(R.id.security);
         llBrowse = view.findViewById(R.id.browse);
+        llchat = view.findViewById(R.id.chat);
         order = view.findViewById(R.id.order);
+        review = view.findViewById(R.id.review);
         manage = view.findViewById(R.id.manage);
         btnLogout = view.findViewById(R.id.logout);
         llFavorite = view.findViewById(R.id.favorite);
-        goodsAdd = view.findViewById(R.id.goodsAdd);
-        goodsAdded = view.findViewById(R.id.goodsAdded);
         initView();
         return view;
     }
 
     private void initView() {
         Boolean isAdmin = (Boolean) SPUtils.get(mActivity,SPUtils.IS_ADMIN,false);
+        Boolean isSeller = (Boolean) SPUtils.get(mActivity,SPUtils.IS_SELLER,false);
 
         llFavorite.setVisibility(isAdmin?View.GONE:View.VISIBLE);
-        order.setVisibility(isAdmin?View.GONE:View.VISIBLE);
+        order.setVisibility(isAdmin || isSeller?View.GONE:View.VISIBLE);
+        review.setVisibility(isAdmin || isSeller?View.GONE:View.VISIBLE);
         llBrowse.setVisibility(isAdmin?View.GONE:View.VISIBLE);
-        goodsAdd.setVisibility(isAdmin?View.GONE:View.VISIBLE);
-        goodsAdded.setVisibility(isAdmin?View.GONE:View.VISIBLE);
         manage.setVisibility(isAdmin?View.VISIBLE:View.GONE);
         //个人信息
         llPerson.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +110,14 @@ public class UserFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        llchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转页面
+                Intent intent = new Intent(mActivity, ChatMessageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //我的订单
         order.setOnClickListener(new View.OnClickListener() {
@@ -118,24 +128,21 @@ public class UserFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转页面
+                Intent intent = new Intent(mActivity, ReviewActivity.class);
+                startActivity(intent);
+            }
+        });
         //联系客服
         llFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mActivity,"功能暂未实现", Toast.LENGTH_SHORT).show();
-            }
-        });
-        goodsAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, AddgoodsActivity.class);
-                startActivity(intent);
-            }
-        });
-        goodsAdded.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, goodsAddedActivity.class);
+                Intent intent = new Intent(mActivity, ChatActivity.class);
+                goods news = DataSupport.where("account = ?","admin").findFirst(goods.class);
+                intent.putExtra("goods",news);
                 startActivity(intent);
             }
         });

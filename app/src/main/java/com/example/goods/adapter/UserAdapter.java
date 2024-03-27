@@ -26,7 +26,7 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//用户适配器
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private List<User> list =new ArrayList<>();
     private Context mActivity;

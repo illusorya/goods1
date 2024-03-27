@@ -3,6 +3,7 @@ package com.example.goods.bean;
 import org.litepal.crud.DataSupport;
 
 
+//已上传的商品
 public class goodsadded extends DataSupport {
     private String account;//账号
     private String title;//标题

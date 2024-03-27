@@ -77,6 +77,7 @@ public class OpeningActivity extends AppCompatActivity {
                             JSONObject o = goodsList.getJSONObject(i);
                                             goods goods = new goods(o.getInt("typeId"),
                                                     o.getString("title"),
+                                                    o.getString("account"),
                                                     o.getString("img"),
                                                     o.getString("content"),
                                                     o.getString("issuer"),

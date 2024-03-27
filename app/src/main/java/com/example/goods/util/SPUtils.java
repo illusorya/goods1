@@ -13,6 +13,8 @@ import java.util.Map;
 public class SPUtils {
     public static final String IF_FIRST = "is_first";//是否第一次进来
     public static final String IS_ADMIN = "is_admin";//是否是管理员
+    public static final String IS_SELLER = "is_seller";//是否是商家
+    public static final String TITLE = "title";
     public static final String ACCOUNT = "account";//账号
     /**
      * 保存在手机里面的文件名

@@ -17,7 +17,11 @@
         <activity android:name=".ui.activity.ManageActivity" />
         <activity android:name=".ui.activity.WxActivity" />
         <activity android:name=".ui.activity.OrderActivity" />
+        <activity android:name=".ui.activity.ReviewActivity" />
+        <activity android:name=".ui.activity.ReviewListActivity" />
         <activity android:name=".ui.activity.JsActivity" />
+        <activity android:name=".ui.activity.ChatActivity" />
+        <activity android:name=".ui.activity.ChatMessageActivity" />
         <activity android:name=".ui.activity.goodsAddedActivity" />
         <activity android:name=".ui.activity.goodsPingjiaActivity" />
         <activity android:name=".ui.activity.OpeningActivity">
@@ -31,6 +35,7 @@
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.goodsDetailActivity" />
+        <activity android:name=".ui.activity.goodsDetailAnotherActivity" />
         <activity android:name=".ui.activity.goodsAddedDetailActivity" />
         <activity android:name=".ui.activity.PersonActivity" />
         <activity android:name=".ui.activity.PasswordActivity" />

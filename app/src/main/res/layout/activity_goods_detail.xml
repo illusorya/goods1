@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--标题栏-->
     <LinearLayout
@@ -74,6 +75,29 @@
                 android:textSize="16dp" />
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorWhite"
+        android:padding="20dp">
+        <Button
+        android:id="@+id/btn_chat"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_border_fill"
+        android:text="联系商家"
+        android:textSize="20dp"
+        android:textColor="@color/colorWhite"/>
+        <Button
+            android:id="@+id/btnGoReview"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_border_fill"
+            android:text="查看评论"
+            android:textSize="20dp"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

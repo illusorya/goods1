@@ -1,91 +1,85 @@
 package com.example.goods.adapter;
 
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.goods.R;
+import com.example.goods.bean.Review;
 import com.example.goods.bean.goods;
-import com.example.goods.util.SPUtils;
+import com.example.goods.bean.User;
+import com.example.goods.ui.activity.ReviewActivity;
+import com.example.goods.ui.activity.ReviewListActivity;
 
+import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-//商品适配器
-public class goodsAdapter extends RecyclerView.Adapter<goodsAdapter.ViewHolder> {
-    private List<goods> list =new ArrayList<>();
+//评论适配器
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder>{
+    private List<Review> list =new ArrayList<>();
     private Context mActivity;
-    private ItemListener mItemListener;
+    private RequestOptions headerRO = new RequestOptions().circleCrop();//圆角变换
     private LinearLayout llEmpty;
-    private RecyclerView rvgoodsList;
-    public void setItemListener(ItemListener itemListener){
+    private RecyclerView rvReviewList;
+    private ReviewAdapter.ItemListener mItemListener;
+    private String title;
+    public void setItemListener(ReviewAdapter.ItemListener itemListener){
         this.mItemListener = itemListener;
     }
-    public goodsAdapter(LinearLayout llEmpty, RecyclerView rvgoodsList){
+    public ReviewAdapter(LinearLayout llEmpty, RecyclerView rvReviewList){
         this.llEmpty = llEmpty;
-        this.rvgoodsList =rvgoodsList;
+        this.rvReviewList =rvReviewList;
     }
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         mActivity = viewGroup.getContext();
-        View view= LayoutInflater.from(mActivity).inflate(R.layout.item_rv_goods_list,viewGroup,false);
-        return new ViewHolder(view);
+        View view= LayoutInflater.from(mActivity).inflate(R.layout.item_rv_review_list,viewGroup,false);
+
+        return new ReviewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        goods goods = list.get(i);
-        if (goods != null) {
-            viewHolder.title.setText(goods.getTitle());
-            viewHolder.author_name.setText(String.format("￥%s",goods.getIssuer()));
+    public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder viewHolder, int i) {
+        Review review = list.get(i);
 
-            Glide.with(mActivity)
-                    .asBitmap()
-                    .load(goods.getImg())
-                    .error(R.drawable.ic_error)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(viewHolder.img);
-            Boolean isAdmin = (Boolean) SPUtils.get(mActivity,SPUtils.IS_ADMIN,false);
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mItemListener!=null){
-                        mItemListener.ItemClick(goods);
-                    }
-                }
-            });
-            if (isAdmin){
+
+        User user = DataSupport.where("account = ? ", review.getAccount()).findFirst(User.class);
+        if (review != null && user!=null ) {
+            viewHolder.date.setText(review.getDate());
+            viewHolder.rating.setText(String.format("评分:%s",review.getRating().toString()));
+
+            viewHolder.title.setText(review.getTitle());
+            viewHolder.content.setText(review.getContent());
+
                 viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity);
-                        dialog.setMessage("确认要删除该商品吗?");
+                        dialog.setMessage("确认要删除该评论吗");
                         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                list.remove(goods);
-                                goods.delete();
+                                list.remove(review);
+                                review.delete();
                                 notifyDataSetChanged();
                                 Toast.makeText(mActivity,"删除成功", Toast.LENGTH_LONG).show();
                                 if (list!=null && list.size() > 0){
-                                    rvgoodsList.setVisibility(View.VISIBLE);
+                                    rvReviewList.setVisibility(View.VISIBLE);
                                     llEmpty.setVisibility(View.GONE);
                                 }else {
-                                    rvgoodsList.setVisibility(View.GONE);
+                                    rvReviewList.setVisibility(View.GONE);
                                     llEmpty.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -100,15 +94,10 @@ public class goodsAdapter extends RecyclerView.Adapter<goodsAdapter.ViewHolder> 
                         return false;
                     }
                 });
-            }
+
         }
     }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
-    public void addItem(List<goods> listAdd) {
+    public void addItem(List<Review> listAdd) {
         //如果是加载第一页，需要先清空数据列表
         this.list.clear();
         if (listAdd!=null){
@@ -118,21 +107,31 @@ public class goodsAdapter extends RecyclerView.Adapter<goodsAdapter.ViewHolder> 
         //通知RecyclerView进行改变--整体
         notifyDataSetChanged();
     }
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-        private TextView author_name;
 
-        private ImageView img;
+        private TextView date;
+        private TextView rating;
+
+        private TextView title;
+        private TextView content;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
-            author_name = itemView.findViewById(R.id.author_name);
 
-            img = itemView.findViewById(R.id.img);
+            date = itemView.findViewById(R.id.date);
+            rating = itemView.findViewById(R.id.rating);
+
+            title = itemView.findViewById(R.id.title);
+            content = itemView.findViewById(R.id.content);
+
+
         }
     }
-
     public interface ItemListener{
-        void ItemClick(goods goods);
+        void ItemClick(Review review);
     }
 }

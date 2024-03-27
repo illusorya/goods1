@@ -141,13 +141,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/rb_user"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="50dp"
-                android:text="普通用户"/>
+                android:text="普通用户" />
+
+            <RadioButton
+                android:id="@+id/rb_seller"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:text="商家" />
+
             <RadioButton
                 android:id="@+id/rb_admin"
                 android:layout_width="0dp"

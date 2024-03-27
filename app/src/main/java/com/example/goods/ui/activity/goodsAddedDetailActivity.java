@@ -29,7 +29,7 @@ import java.util.List;
 
 
 /**
- * 商品明细信息
+ * 已上传的商品明细信息
  */
 public class goodsAddedDetailActivity extends AppCompatActivity {
     private Activity mActivity;

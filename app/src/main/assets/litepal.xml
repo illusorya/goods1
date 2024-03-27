@@ -3,13 +3,15 @@
     <!--数据库名称-->
     <dbname value="goods"/>
     <!--数据库版本-->
-    <version value="4"/>
+    <version value="7"/>
     <list>
         <!--映射   每一张表 -->
         <mapping class="com.example.goods.bean.User"/>
         <mapping class="com.example.goods.bean.goods"/>
         <mapping class="com.example.goods.bean.goodsadded"/>
+        <mapping class="com.example.goods.bean.ChatMessage"/>
         <mapping class="com.example.goods.bean.Orders"/>
+        <mapping class="com.example.goods.bean.Review"/>
         <mapping class="com.example.goods.bean.Car"/>
         <mapping class="com.example.goods.bean.Browse"/>
     </list>

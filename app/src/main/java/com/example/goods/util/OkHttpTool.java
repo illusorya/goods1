@@ -323,7 +323,7 @@ public class OkHttpTool {
 //})
 
 
-/*以前自己写的日志拦截器*/
+
 //添加日志处理拦截器
 //.addInterceptor(new Interceptor() {
 //    @Override

@@ -123,9 +123,10 @@ public class AddgoodsActivity extends AppCompatActivity {
                 goods.setIssuer(issuer);
                 goods.setImg(img);
                 goods.setContent(content);
+                goods.setAccount(account);
                 goodsadded.setAccount(account);
             }else {
-                goods = new goods(typeId,title,img,content,issuer,sf.format(new Date()));
+                goods = new goods(typeId,title,account,img,content,issuer,sf.format(new Date()));
             }
             goods.save();
             goodsadded = new goodsadded(account, title);

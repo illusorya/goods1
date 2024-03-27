@@ -28,35 +28,29 @@ import java.util.Date;
 
 
 /**
- * 商品明细信息
+ * 商品明细信息（商家）
  */
-public class goodsDetailActivity extends AppCompatActivity {
+public class goodsDetailAnotherActivity extends AppCompatActivity {
     private Activity mActivity;
     private ImageView ivImg;
     private TextView tvTitle;
     private TextView tvDate;
     private TextView tvContent;
     private TextView tvIssuer;
-    private Button btnChat;
-    private Button btnCollect;
-    private Button btnCancel;
-    private Button btnGoReview;
     private ActionBar mActionBar;//标题栏
+    private Button btn_GoReview;
     private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setContentView(R.layout.activity_goods_detail);
+        setContentView(R.layout.activity_goods_detail_another);
         ivImg = findViewById(R.id.img);
         tvTitle= findViewById(R.id.title);
         tvDate = findViewById(R.id.date);
         tvContent = findViewById(R.id.content);
         tvIssuer = findViewById(R.id.issuer);
-        btnChat = findViewById(R.id.btn_chat);
-        btnCollect = findViewById(R.id.btn_collect);
-        btnCancel = findViewById(R.id.btn_cancel);
-        btnGoReview = findViewById(R.id.btnGoReview);
+        btn_GoReview = findViewById(R.id.btn_GoReview);
         mActionBar = findViewById(R.id.myActionBar);
         //侧滑菜单
         mActionBar.setData(mActivity,"商品详情", R.drawable.ic_back, 0, 0, getResources().getColor(R.color.colorPrimary), new ActionBar.ActionBarClickListener() {
@@ -88,51 +82,15 @@ public class goodsDetailActivity extends AppCompatActivity {
             browse1.save();
         }
 
-        Boolean isAdmin = (Boolean) SPUtils.get(mActivity,SPUtils.IS_ADMIN,false);
-        if (!isAdmin){
-            Car order = DataSupport.where("account = ? and title = ?",account,goods.getTitle()).findFirst(Car.class);
-            btnCollect.setVisibility(order!=null?View.GONE:View.VISIBLE);
-            btnCancel.setVisibility(order!=null?View.VISIBLE:View.GONE);
-        }
-        btnChat.setOnClickListener(new View.OnClickListener() {
+        btn_GoReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(goodsDetailActivity.this, ChatActivity.class);
+                Intent intent = new Intent(goodsDetailAnotherActivity.this, ReviewListActivity.class);
                 goods news = DataSupport.where("title = ?",goods.getTitle()).findFirst(goods.class);
                 intent.putExtra("goods",news);
                 startActivity(intent);
             }
         });
-        btnGoReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(goodsDetailActivity.this, ReviewListActivity.class);
-                goods news = DataSupport.where("title = ?",goods.getTitle()).findFirst(goods.class);
-                intent.putExtra("goods",news);
-                startActivity(intent);
-            }
-        });
-        //收藏
-        btnCollect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Car car = new Car(goods.getIssuer(),account,goods.getTitle(),"S"+System.currentTimeMillis(),account,sf.format(new Date()));
-                car.save();
-                Toast.makeText(mActivity,"加入购物车成功", Toast.LENGTH_SHORT).show();
-                btnCollect.setVisibility(View.GONE);
-                btnCancel.setVisibility(View.VISIBLE);
-            }
-        });
-        //取消收藏
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Car order = DataSupport.where("account = ? and title = ?",account,goods.getTitle()).findFirst(Car.class);
-                order.delete();
-                Toast.makeText(mActivity,"已从购物车移除", Toast.LENGTH_SHORT).show();
-                btnCollect.setVisibility(View.VISIBLE);
-                btnCancel.setVisibility(View.GONE);
-            }
-        });
+
     }
 }

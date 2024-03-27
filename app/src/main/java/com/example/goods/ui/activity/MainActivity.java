@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.goods.MyApplication;
 import com.example.goods.R;
+import com.example.goods.ui.fragment.goodsAddedFragment;
 import com.example.goods.ui.fragment.goodsFragment;
 import com.example.goods.ui.fragment.CarFragment;
 import com.example.goods.ui.fragment.UserFragment;
@@ -32,10 +33,12 @@ public class MainActivity extends Activity {
     private LinearLayout llContent;
     private RadioButton rbgoods;
     private RadioButton rbgoodsData;
+    private RadioButton rbgoodsAdded;
     private RadioButton rbUserManage;
     private RadioButton rbUser;
-    private Fragment[] fragments = new Fragment[]{null, null,null,null};//存放Fragment
+    private Fragment[] fragments = new Fragment[]{null, null,null,null,null};//存放Fragment
     private Boolean mIsAdmin;//是否管理员
+    private Boolean mIsSeller;
     private String mAccount;//账号
 
     @Override
@@ -45,13 +48,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         MyApplication.Instance.setMainActivity(myActivity);
         mIsAdmin = (Boolean) SPUtils.get(myActivity, SPUtils.IS_ADMIN,false);
+        mIsSeller = (Boolean) SPUtils.get(myActivity, SPUtils.IS_SELLER,false);
         llContent =  (LinearLayout) findViewById(R.id.ll_main_content);
         rbgoods = (RadioButton) findViewById(R.id.rb_main_goods);
         rbgoodsData = (RadioButton) findViewById(R.id.rb_main_goods_data);
+        rbgoodsAdded = (RadioButton) findViewById(R.id.rb_main_goods_added);
         rbUserManage = (RadioButton) findViewById(R.id.rb_main_setting);
         rbUser = (RadioButton) findViewById(R.id.rb_main_user);
-        mActionBar = (ActionBar) findViewById(R.id.myActionBar);
-        //侧滑菜单
+        mActionBar = (ActionBar) findViewById(R.id.myActionBar);//侧滑菜单
+
+
         mActionBar.setData(myActivity,"花钱U", 0, 0, 0, getResources().getColor(R.color.colorPrimary), new ActionBar.ActionBarClickListener() {
             @Override
             public void onLeftClick() {
@@ -104,10 +110,20 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        rbgoodsAdded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //已经登录
+                    mActionBar.setTitle("已上传的商品");
+                    switchFragment(4);
+
+            }
+        });
     }
 
     private void initView() {
         mIsAdmin = (Boolean) SPUtils.get(myActivity,SPUtils.IS_ADMIN,false);
+        mIsSeller = (Boolean) SPUtils.get(myActivity,SPUtils.IS_SELLER,false);
         mAccount = (String) SPUtils.get(myActivity,SPUtils.ACCOUNT,"");
         //设置导航栏图标样式
         Drawable iconNews=getResources().getDrawable(R.drawable.selector_main_rb_home);//设置主页图标样式
@@ -118,6 +134,10 @@ public class MainActivity extends Activity {
         iconNewsData.setBounds(0,0,68,68);//设置图标边距 大小
         rbgoodsData.setCompoundDrawables(null,iconNewsData,null,null);//设置图标位置
         rbgoodsData.setCompoundDrawablePadding(5);//设置文字与图片的间距
+        Drawable icongoods=getResources().getDrawable(R.drawable.selector_main_rb_buy);//设置主页图标样式
+        icongoods.setBounds(0,0,60,60);//设置图标边距 大小
+        rbgoodsAdded.setCompoundDrawables(null,icongoods,null,null);//设置图标位置
+        rbgoodsAdded.setCompoundDrawablePadding(5);//设置文字与图片的间距
         Drawable iconSetting=getResources().getDrawable(R.drawable.selector_main_rb_manage);//设置主页图标样式
         iconSetting.setBounds(0,0,60,60);//设置图标边距 大小
         rbUserManage.setCompoundDrawables(null,iconSetting,null,null);//设置图标位置
@@ -129,7 +149,10 @@ public class MainActivity extends Activity {
         rbUserManage.setVisibility(mIsAdmin? View.VISIBLE: View.GONE);
         switchFragment(0);
         rbgoods.setChecked(true);
-        rbgoodsData.setVisibility(mIsAdmin? View.GONE: View.VISIBLE);
+        rbgoodsData.setVisibility(mIsAdmin || mIsSeller? View.GONE: View.VISIBLE);
+        switchFragment(0);
+        rbgoods.setChecked(true);
+        rbgoodsAdded.setVisibility(mIsSeller? View.VISIBLE: View.GONE);
         switchFragment(0);
         rbgoods.setChecked(true);
     }
@@ -149,32 +172,57 @@ public class MainActivity extends Activity {
         if (fragments[fragmentIndex] == null) {
             if (mIsAdmin){
                 switch (fragmentIndex) {
-                    case 0://NewsFragment
+                    case 0://goodsFragment
                         fragments[fragmentIndex] = new goodsFragment();
                         break;
-                    case 1://CollectFragment
+                    case 1://CarFragment
                         fragments[fragmentIndex] = new CarFragment();
                         break;
-                    case 2://UserManageFragment
+                    case 2://OrderFragment
                         fragments[fragmentIndex] = new OrderFragment();
                         break;
                     case 3://UserFragment
                         fragments[fragmentIndex] = new UserFragment();
+                        break;
+                    case 4://goodsAddedFragment
+                        fragments[fragmentIndex] = new goodsAddedFragment();
                         break;
                 }
-            }else {
+            } else if (mIsSeller) {
                 switch (fragmentIndex) {
-                    case 0://NewsFragment
+                    case 0://goodsFragment
                         fragments[fragmentIndex] = new goodsFragment();
                         break;
-                    case 1://CollectFragment
+                    case 1://CarFragment
                         fragments[fragmentIndex] = new CarFragment();
                         break;
-                    case 2://UserManageFragment
+                    case 2://OrderFragment
                         fragments[fragmentIndex] = new OrderFragment();
                         break;
                     case 3://UserFragment
                         fragments[fragmentIndex] = new UserFragment();
+                        break;
+                    case 4://goodsAddedFragment
+                        fragments[fragmentIndex] = new goodsAddedFragment();
+                        break;
+                }
+
+            } else {
+                switch (fragmentIndex) {
+                    case 0://goodssFragment
+                        fragments[fragmentIndex] = new goodsFragment();
+                        break;
+                    case 1://CarFragment
+                        fragments[fragmentIndex] = new CarFragment();
+                        break;
+                    case 2://OrderFragment
+                        fragments[fragmentIndex] = new OrderFragment();
+                        break;
+                    case 3://UserFragment
+                        fragments[fragmentIndex] = new UserFragment();
+                        break;
+                    case 4://goodsAddedFragment
+                        fragments[fragmentIndex] = new goodsAddedFragment();
                         break;
                 }
             }

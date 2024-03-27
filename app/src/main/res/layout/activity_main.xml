@@ -44,6 +44,7 @@
                 android:background="@null"
                 android:text="首页"/>
             <RadioButton
+
                 android:id="@+id/rb_main_goods_data"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -56,6 +57,20 @@
                 android:textSize="14dp"
                 android:background="@null"
                 android:text="购物车"/>
+            <RadioButton
+
+                android:id="@+id/rb_main_goods_added"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:drawableTop="@drawable/selector_main_rb_car"
+                android:textColor="@drawable/selector_main_rb_text"
+                android:textSize="14dp"
+                android:background="@null"
+                android:text="上传列表"/>
             <RadioButton
 
                 android:id="@+id/rb_main_setting"

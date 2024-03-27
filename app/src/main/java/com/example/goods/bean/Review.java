@@ -4,28 +4,13 @@ import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 
-
-/**
- * 商品
- */
-public class goods extends DataSupport implements Serializable {
-    private Integer typeId;//类型
+//评论
+public class Review extends DataSupport implements Serializable {
     private String title;//标题
-    private String account;
-    private String img;//图片
+    private String account;//账号
     private String content;//内容
-    private String issuer;//价格
-    private String date;//时间
-
-    public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
-
-
+    private String date;
+    private Float rating;
     public String getTitle() {
         return title;
     }
@@ -40,15 +25,6 @@ public class goods extends DataSupport implements Serializable {
     public void setAccount(String account) {
         this.account = account;
     }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
     public String getContent() {
         return content;
     }
@@ -56,7 +32,6 @@ public class goods extends DataSupport implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-
     public String getDate() {
         return date;
     }
@@ -64,22 +39,19 @@ public class goods extends DataSupport implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
-
-    public String getIssuer() {
-        return issuer;
+    public Float getRating() {
+        return rating;
     }
 
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
-
-    public goods(Integer typeId, String title, String account,String img, String content, String issuer, String date) {
-        this.typeId = typeId;
+    public Review(String title,String account,String content,String date,Float rating){
         this.title = title;
         this.account = account;
-        this.img = img;
         this.content = content;
-        this.issuer = issuer;
         this.date = date;
+        this.rating = rating;
+
     }
 }

@@ -36,6 +36,7 @@ public class LoginActivity extends Activity {
     private Button btnLogin;//登录按钮
     private RadioGroup rgType;//用户类型
     private RadioButton rbUser;//用户类型
+    private RadioButton rbSeller;
     private RadioButton rbAdmin;//用户类型
     private CheckBox cbAgree;
     private TextView tv_mm;
@@ -51,6 +52,7 @@ public class LoginActivity extends Activity {
         btnLogin=(Button)findViewById(R.id.btn_login);//获取登录
         rgType = findViewById(R.id.rg_type);
         rbUser = findViewById(R.id.rb_user);
+        rbSeller = findViewById(R.id.rb_seller);
         rbAdmin = findViewById(R.id.rb_admin);
         cbAgree = findViewById(R.id.cb_agree);
         mTitleBar = (ActionBar)findViewById(R.id.myActionBar);
@@ -87,6 +89,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 SPUtils.put(activity,SPUtils.IS_ADMIN,checkedId == R.id.rb_admin);
+                SPUtils.put(activity,SPUtils.IS_SELLER,checkedId == R.id.rb_seller);
             }
         });
         //设置点击按钮
@@ -100,6 +103,7 @@ public class LoginActivity extends Activity {
                 String account= etAccount.getText().toString();
                 String password=etPassword.getText().toString();
                 Boolean isAdmit = (Boolean) SPUtils.get(activity,SPUtils.IS_ADMIN,false);
+                Boolean isSeller = (Boolean) SPUtils.get(activity,SPUtils.IS_SELLER,false);
                 if ("".equals(account)){//账号不能为空
                     Toast.makeText(activity,"账号不能为空!", Toast.LENGTH_LONG).show();
                     return;

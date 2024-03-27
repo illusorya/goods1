@@ -25,6 +25,7 @@ import com.example.goods.bean.goods;
 import com.example.goods.ui.activity.AddgoodsActivity;
 import com.example.goods.ui.activity.LoginActivity;
 import com.example.goods.ui.activity.goodsDetailActivity;
+import com.example.goods.ui.activity.goodsDetailAnotherActivity;
 import com.example.goods.util.KeyBoardUtil;
 import com.example.goods.util.SPUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +49,7 @@ public class goodsFragment extends Fragment {
     private goodsAdapter mgoodsAdapter;
     private LinearLayout llEmpty;
     private Boolean mIsAdmin;
+    private Boolean mIsSeller;
     private EditText etQuery;//搜索内容
     private ImageView ivSearch;//搜索图标
     private FloatingActionButton btnAdd;
@@ -107,7 +109,8 @@ public class goodsFragment extends Fragment {
      */
     private void initView() {
         mIsAdmin = (Boolean) SPUtils.get(myActivity, SPUtils.IS_ADMIN, false);
-        btnAdd.setVisibility(mIsAdmin? View.VISIBLE: View.GONE);
+        mIsSeller = (Boolean) SPUtils.get(myActivity, SPUtils.IS_SELLER, false);
+        btnAdd.setVisibility(mIsAdmin || mIsSeller? View.VISIBLE: View.GONE);
         tabTitle.setTabMode(TabLayout.MODE_SCROLLABLE);
         //设置tablayout距离上下左右的距离
        // tabTitle.setPadding(20,20,20,20);
@@ -131,6 +134,7 @@ public class goodsFragment extends Fragment {
             @Override
             public void ItemClick(goods goods) {
                 boolean isAdmin = (boolean) SPUtils.get(myActivity,SPUtils.IS_ADMIN,false);
+                boolean isSeller = (boolean) SPUtils.get(myActivity,SPUtils.IS_SELLER,false);
                 String account = (String) SPUtils.get(myActivity,SPUtils.ACCOUNT,"");
                 if ("".equals(account)) {//未登录,跳转到登录页面
                     MyApplication.Instance.getMainActivity().finish();
@@ -139,7 +143,9 @@ public class goodsFragment extends Fragment {
                     Intent intent;
                     if (isAdmin){
                         intent = new Intent(myActivity, AddgoodsActivity.class);
-                    }else {
+                    } else if (isSeller) {
+                        intent = new Intent(myActivity, goodsDetailAnotherActivity.class);
+                    } else {
                         intent = new Intent(myActivity, goodsDetailActivity.class);
                     }
                     intent.putExtra("goods",goods);

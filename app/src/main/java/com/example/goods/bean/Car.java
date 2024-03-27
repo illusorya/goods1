@@ -4,6 +4,7 @@ import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 
+//购物车
 public class Car extends DataSupport implements Serializable {
     private String account;//账号
     private String title;//标题

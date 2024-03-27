@@ -18,6 +18,8 @@ import com.example.goods.bean.goods;
 import com.example.goods.util.SPUtils;
 import com.example.goods.widget.ActionBar;
 
+import org.litepal.crud.DataSupport;
+
 import java.text.SimpleDateFormat;
 
 
@@ -34,6 +36,7 @@ public class goodsXActivity extends AppCompatActivity {
     private Button btnCollect;
     private Button btnCancel;
     private Button btnGoToReview;
+
     private ActionBar mActionBar;//标题栏
     private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
@@ -46,8 +49,7 @@ public class goodsXActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.date);
         tvContent = findViewById(R.id.content);
         tvIssuer = findViewById(R.id.issuer);
-        btnCollect = findViewById(R.id.btn_collect);
-        btnCancel = findViewById(R.id.btn_cancel);
+
         mActionBar = findViewById(R.id.myActionBar);
         //侧滑菜单
         mActionBar.setData(mActivity,"查看详情", R.drawable.ic_back, 0, 0, getResources().getColor(R.color.colorPrimary), new ActionBar.ActionBarClickListener() {
@@ -80,9 +82,12 @@ public class goodsXActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(goodsXActivity.this, goodsPingjiaActivity.class);
+                goods news = DataSupport.where("title = ?",goods.getTitle()).findFirst(goods.class);
+                intent.putExtra("goods",news);
                 startActivity(intent);
             }
         });
+
 
     }
 

@@ -4,6 +4,7 @@ import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 
+//订单
 public class Orders extends DataSupport implements Serializable {
     private String account;//账号
     private String title;//标题
